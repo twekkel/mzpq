@@ -20,11 +20,15 @@ public:
 	void put(int c) {putchar(c);}
 } out;
 
+bool fexists(const std::string file) {
+	return( access( file.c_str(), F_OK ) != -1 );
+}
+
 void usage() {
 	printf(
 "Usage: mzpq [-1..9] [-cdfhV] [-m method] [files]\n"
 "\n"
-" -1..9 compression level\n"
+" -1..9 compression level, default 4\n"
 " -c    write to standard output\n"
 " -d    decompress\n"
 " -f    force overwrite of output file\n"
@@ -48,9 +52,11 @@ int main(int argc, char **argv) {
 	bool compress = true;
 	bool force    = false;
 	std::size_t found;
-	std::string method = "2";
+	std::string method = "4";
 	std::string fname;
+	std::string fnorg;
 
+	// Parse command line arguments
 	while ((c = getopt (argc, argv, "123456789cdfhm:V")) != -1)
 	switch(c)
 	{
@@ -94,7 +100,7 @@ int main(int argc, char **argv) {
 		usage();
 		break;
 	case 'm':
-		method=optarg;
+		method = optarg;
 		break;
 	case 'V':
 		version();
@@ -103,51 +109,54 @@ int main(int argc, char **argv) {
 		usage();
 	}
 
-	// Find filename from command line arguments
-	if ( argv[optind] != NULL ) fname = argv[optind];
-	if ( fname.compare("-") == 0) fname.clear();
-	std::string fnorg = fname;
+	// Loop over the file names
+	for ( int i = optind; i < argc; i++ ) {
 
-	// Try to read from file
-	if ( ! fname.empty() && access( fname.c_str(), F_OK ) == -1 ) {
-		fprintf(stderr, "%s does not exists\n", fname.c_str());
-		exit(1);
-	}
+		if ( argv[i] != NULL ) fname = argv[i];
+		if ( fname.compare("-") == 0) fname.clear();
+		std::string fnorg = fname;
 
-	if ( ! fname.empty() ) {
-		stdin = freopen( fname.c_str() , "r", stdin );
-	}
-
-	// Compress
-	if ( compress && ! conout && ! fname.empty() ) { 
-		fname += suffix;
-		if ( ! force && access( fname.c_str(), F_OK ) != -1 ) {
-			fprintf(stderr, "%s already exists\n", fname.c_str());
-			return 1;
-        	}
-		stdout = freopen(fname.c_str() , "w", stdout);
-	}
-
-	// Decompress
-	if ( ! compress && ! conout && ! fname.empty() ) {
-		found = fname.find(suffix); 
-		if ( found < 0 ) {
-			fprintf(stderr, "unknown suffix: %s\n", fname.c_str());
+		// Try to read from file
+		if ( ! fname.empty() && ! fexists(fname) ) {
+			fprintf(stderr, "%s does not exists\n", fname.c_str());
 			exit(1);
 		}
-		fname = fname.substr( 0, found ); 
-		if ( ! force && access( fname.c_str(), F_OK ) != -1 ) {
-			fprintf(stderr, "%s already exists\n", fname.c_str());
-			return 1;
-        	}
-		stdout = freopen(fname.c_str() , "w", stdout);
-        }
 
-	// Do the actual work
-	if ( compress ) {
-		libzpaq::compress(&in, &out, method.c_str(), fnorg.c_str());
-	} else {
-		libzpaq::decompress(&in, &out);
+		if ( ! fname.empty() ) {
+			stdin = freopen( fname.c_str() , "r", stdin );
+		}
+
+		// Compress
+		if ( compress && ! conout && ! fname.empty() ) {
+			fname += suffix;
+			if ( ! force && fexists(fname) ) {
+				fprintf(stderr, "%s already exists\n", fname.c_str());
+				return 1;
+			}
+			stdout = freopen(fname.c_str() , "w", stdout);
+		}
+
+		// Decompress
+		if ( ! compress && ! conout && ! fname.empty() ) {
+			found = fname.find(suffix);
+			if ( found < 0 ) {
+				fprintf(stderr, "unknown suffix: %s\n", fname.c_str());
+				exit(1);
+			}
+			fname = fname.substr( 0, found );
+			if ( ! force && fexists(fname) ) {
+				fprintf(stderr, "%s already exists\n", fname.c_str());
+				return 1;
+			}
+			stdout = freopen(fname.c_str() , "w", stdout);
+		}
+
+		// Do the actual work
+		if ( compress ) {
+			libzpaq::compress(&in, &out, method.c_str(), fnorg.c_str());
+		} else {
+			libzpaq::decompress(&in, &out);
+		}
 	}
 
 	// Flush output streams before exiting
