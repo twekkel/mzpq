@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
 		// Decompress
 		if ( ! compress && ! conout && ! fname.empty() ) {
 			found = fname.find(suffix);
-			if ( found < 0 ) {
+			if ( found == std::string::npos ) {
 				fprintf(stderr, "unknown suffix: %s\n", fname.c_str());
 				exit(1);
 			}
