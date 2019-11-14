@@ -109,8 +109,9 @@ int main(int argc, char **argv) {
 		usage();
 	}
 
-	// Loop over the file names
-	for ( int i = optind; i < argc; i++ ) {
+	// Loop over the arguments/file names, at least once to cover stdin
+	int i = optind;
+	do {
 
 		if ( argv[i] != NULL ) fname = argv[i];
 		if ( fname.compare("-") == 0) fname.clear();
@@ -157,7 +158,9 @@ int main(int argc, char **argv) {
 		} else {
 			libzpaq::decompress(&in, &out);
 		}
-	}
+
+		i++;
+	} while ( i < argc );
 
 	// Flush output streams before exiting
 	fflush(stdout);
