@@ -26,14 +26,16 @@ bool fexists(const std::string file) {
 
 void usage() {
 	printf(
-"Usage: mzpq [-1..9] [-cdfhV] [-m method] [files]\n"
+"Usage: mzpq [-1..9] [-cdfhkNV] [-m method] [files]\n"
 "\n"
 " -1..9 compression level, default 4\n"
 " -c    write to standard output\n"
 " -d    decompress\n"
-" -f    force overwrite of output file\n"
+" -f    overwrite existing output files\n"
 " -h    this help\n"
+" -k    keep (don't delete) input files\n"
 " -m    compression method, see libzpaq.h for details\n"
+" -N    save original file name when compressing\n"
 " -V    version\n"
 	);
 	exit(1);
@@ -51,13 +53,15 @@ int main(int argc, char **argv) {
 	bool conout   = false;
 	bool compress = true;
 	bool force    = false;
+	bool keep     = false;
+	bool name     = false;
 	std::size_t found;
 	std::string method = "4";
 	std::string fname;
 	std::string fnorg;
 
 	// Parse command line arguments
-	while ((c = getopt (argc, argv, "123456789cdfhm:V")) != -1)
+	while ((c = getopt (argc, argv, "123456789cdfhkm:NV")) != -1)
 	switch(c)
 	{
 	case '1':
@@ -99,8 +103,14 @@ int main(int argc, char **argv) {
 	case 'h':
 		usage();
 		break;
+	case 'k':
+		keep = true;
+		break;
 	case 'm':
 		method = optarg;
+		break;
+	case 'N':
+		name = true;
 		break;
 	case 'V':
 		version();
@@ -115,7 +125,7 @@ int main(int argc, char **argv) {
 
 		if ( argv[i] != NULL ) fname = argv[i];
 		if ( fname.compare("-") == 0) fname.clear();
-		std::string fnorg = fname;
+		if ( name ) fnorg = fname;
 
 		// Try to read from file
 		if ( ! fname.empty() && ! fexists(fname) ) {
@@ -159,6 +169,10 @@ int main(int argc, char **argv) {
 			libzpaq::decompress(&in, &out);
 		}
 
+		// Remove input file
+		if ( ! keep && ! fnorg.empty() ) remove(fnorg.c_str());
+
+		// Next file
 		i++;
 	} while ( i < argc );
 
