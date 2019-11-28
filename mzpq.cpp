@@ -38,11 +38,11 @@ void usage() {
 " -N    save original file name when compressing\n"
 " -V    version\n"
 	);
-	exit(1);
+	exit(0);
 }
 
 void version() {
-	printf("mzpq 0.1\n");
+	printf("mzpq 0.2\n");
 	printf("libzpaq 7.15\n");
 	exit(0);
 }
