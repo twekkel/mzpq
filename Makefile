@@ -19,6 +19,8 @@ mzpq: mzpq.o libzpaq.o
 install: mzpq
 	install -m 0755 -d $(DESTDIR)$(BINDIR)
 	install -m 0755 mzpq $(DESTDIR)$(BINDIR)
+	ln -sf $(DESTDIR)$(BINDIR)/mzpq $(DESTDIR)$(BINDIR)/mzpqcat
+	ln -sf $(DESTDIR)$(BINDIR)/mzpq $(DESTDIR)$(BINDIR)/unmzpq
 
 clean:
 	rm -f mzpq.o libzpaq.o mzpq

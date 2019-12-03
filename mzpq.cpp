@@ -49,6 +49,7 @@ void version() {
 
 int main(int argc, char **argv) {
 
+	// Initialization
 	int c = 0;
 	bool conout   = false;
 	bool compress = true;
@@ -59,6 +60,19 @@ int main(int argc, char **argv) {
 	std::string method = "4";
 	std::string fname;
 	std::string fnorg;
+
+	// See how we are called and change defaults accordingly
+	std::string filename = argv[0];
+	found = filename.find_last_of("\\/");
+	if ( std::string::npos != found ) filename.erase(0, found + 1);
+
+	if ( filename.compare("unmzpq") == 0 ) {
+		compress = false;
+	} else if ( filename.compare("mzpqcat") == 0 ) {
+		conout   = true;
+		compress = false;
+		keep     = true;
+	}
 
 	// Parse command line arguments
 	while ((c = getopt (argc, argv, "123456789cdfhkm:NV")) != -1)
