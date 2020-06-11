@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
 
 		if ( argv[i] != NULL ) fname = argv[i];
 		if ( fname.compare("-") == 0) fname.clear();
-		if ( name ) fnorg = fname;
+		fnorg = fname;
 
 		// Try to read from file
 		if ( ! fname.empty() && ! fexists(fname) ) {
@@ -178,13 +178,13 @@ int main(int argc, char **argv) {
 
 		// Do the actual work
 		if ( compress ) {
-			libzpaq::compress(&in, &out, method.c_str(), fnorg.c_str());
+			libzpaq::compress(&in, &out, method.c_str(), name ? fnorg.c_str() : "");
 		} else {
 			libzpaq::decompress(&in, &out);
 		}
 
 		// Remove input file
-		if ( ! keep && ! fnorg.empty() ) remove(fnorg.c_str());
+		if ( ! keep ) remove(fnorg.c_str());
 
 		// Next file
 		i++;
