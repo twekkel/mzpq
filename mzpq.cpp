@@ -42,7 +42,7 @@ void usage() {
 }
 
 void version() {
-	printf("mzpq 0.2\n");
+	printf("mzpq 0.21\n");
 	printf("libzpaq 7.15\n");
 	exit(0);
 }

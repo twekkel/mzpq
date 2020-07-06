@@ -2,9 +2,9 @@
 
 mzpq compresses files using the ZPAQ compression library. The  command-line options are deliberately very similar to those of gzip/bzip2/xz/zstd, but they are not identical. In general mzpq will achive very high compression, at the cost of memory and speed.
 
-zpaq is a journaling archiver written by Matt Mahoney. The command line for zpaq is suited for creating encrypted, deduplicated, compressed, incremental backups. mzpq uses the same compression library, but with a simpler command line interface for compression only. zpaq can still extract compressed files created by mzpq.
+zpaq is a journaling archiver written by Matt Mahoney. The command line for zpaq is suited for creating encrypted, deduplicated, compressed, incremental archives and backups. mzpq uses the same compression library, but with a simpler command line interface for compression only. zpaq can still extract compressed files created by mzpq.
 
-'m' in mzpq stands for micro/mini/minimalistic/... 'a' has been stripped of, as it is not an archiver like zpaq.
+'m' in mzpq means micro/mini/minimalistic/... 'a' has been stripped off, as it is not an archiver like zpaq.
 
 Currently file attributes are not preserved.
 
