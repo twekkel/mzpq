@@ -23,4 +23,4 @@ install: mzpq
 	ln -sf $(DESTDIR)$(BINDIR)/mzpq $(DESTDIR)$(BINDIR)/unmzpq
 
 clean:
-	rm -f mzpq.o libzpaq.o mzpq
+	rm -f mzpq.o libzpaq.o mzpq mzpqcat unmzpq
