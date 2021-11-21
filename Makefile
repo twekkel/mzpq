@@ -22,5 +22,8 @@ install: mzpq
 	ln -sf $(DESTDIR)$(BINDIR)/mzpq $(DESTDIR)$(BINDIR)/mzpqcat
 	ln -sf $(DESTDIR)$(BINDIR)/mzpq $(DESTDIR)$(BINDIR)/unmzpq
 
+test: mzpq
+	echo "Hello World!" | mzpq | mzpq -d
+
 clean:
 	rm -f mzpq.o libzpaq.o mzpq mzpqcat unmzpq

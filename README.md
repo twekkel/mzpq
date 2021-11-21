@@ -62,8 +62,8 @@ All compressors were used with the default compression level.
 | bzip2 -9      |          29008758 |          7.59 |            3.45 |
 | xz -6         |          26375764 |         65.59 |            1.51 |
 | PPMd -m10 -o4 |          26275353 |          6.52 |            7.11 |
-| mzpq -4       |          21979813 |         85.01 |           87.66 |
-| mzpq -9       |          19136943 |        254.64 |          268.73 |
+| **mzpq -4**   |          21979813 |         85.01 |           87.66 |
+| **mzpq -9**   |          19136943 |        254.64 |          268.73 |
 
 Note: '-4' is the default compression level for mzpq, '-9' is the maximum.
 
