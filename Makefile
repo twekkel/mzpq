@@ -1,7 +1,6 @@
-CXX=g++
-CPPFLAGS+=-Dunix
-#CXXFLAGS+=-O3 -s -march=native -std=c++17 -Wall -Wpedantic
-CXXFLAGS+=-O3 -s -march=native
+CXX      ?=g++
+CXXFLAGS ?=-O3 -s -march=native
+
 PREFIX=/usr/local
 BINDIR=$(PREFIX)/bin
 
