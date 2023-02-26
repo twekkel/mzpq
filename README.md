@@ -1,3 +1,9 @@
+Making this repo readonly as libzpaq is no longer maintained.
+
+A good alternative is **[Kanzi](https://github.com/flanglet/kanzi-cpp)**
+
+---
+
 # mzpq
 
 mzpq compresses files using the ZPAQ compression library. The  command-line options are deliberately very similar to those of gzip/bzip2/xz/zstd, but they are not identical. In general mzpq will achive very high compression, at the cost of memory and speed.
